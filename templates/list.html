@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}
+	{% if category %} 
+		{{category.name}} 
+	{% else %} 
+		Products
+	{% endif %}
+{% endblock %}
+
+{% block content %}
+<div id = "sidebar" class="list-group">
+	<h3> Categories</h3>
+	<ul>
+		<a href='/'>
+		<li {% if not category %} class = "selected" {% else %} class = "notSelected" {% endif %}>
+			 All 
+		</li>
+		</a>
+	{% for c in categories %}
+		<a href="/category/{{c.id}}/">
+		<li {% if category.name == c.name %} class="selected" {% else %} class = "notSelected"  {% endif %}>
+			 {{c.name}}
+		</li>
+		</a>
+	{% endfor %}
+	</ul>
+</div>
+<div id="main" class="product-list">
+	<h1> {% if category %} {{category.name}} {% else %} Products {% endif %} </h1>
+	{% for product in products %}
+	<div class="item">
+		<a href="/product_detail/{{product.id}}">
+			<img src="{% if product.image %}{{product.image.url}} {% else %} {% static 'blank.jpg' %} {% endif %}">
+		</a>
+		<br>
+		<a href="/product_detail/{{product.id}}"> {{product.name}} </a> <br>
+		${{product.price}}
+	</div>
+	{% endfor %}
+</div>
+{% endblock %}
